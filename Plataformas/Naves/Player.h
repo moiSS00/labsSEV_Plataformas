@@ -17,13 +17,18 @@ public:
 
 	int shootCadence = 30;
 	int shootTime = 0;
+	int orientation;
+	int state;
+
 	Audio* audioShoot;
+
 	Animation* aIdleRight;
 	Animation* aIdleLeft;
 	Animation* aRunningRight;
 	Animation* aRunningLeft;
+	Animation* aShootingRight;
+	Animation* aShootingLeft;
 	Animation* animation; // Referencia a la animación mostrada
-	int orientation;
 };
 
 
