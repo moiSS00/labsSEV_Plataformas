@@ -128,15 +128,6 @@ void GameLayer::keysToControls(SDL_Event event) {
 void GameLayer::update() {
 	background->update();
 
-	// Generar enemigos
-	newEnemyTime--;
-	if (newEnemyTime <= 0) {
-		int rX = (rand() % (600 - 500)) + 1 + 500;
-		int rY = (rand() % (300 - 60)) + 1 + 60;
-		enemies.push_back(new Enemy(rX, rY, game));
-		newEnemyTime = 110;
-	}
-
 	player->update();
 
 	for (auto const& enemy : enemies) {
@@ -270,6 +261,13 @@ void GameLayer::loadMap(string name) {
 void GameLayer::loadMapObject(char character, float x, float y)
 {
 	switch (character) {
+	case 'E': {
+		Enemy* enemy = new Enemy(x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		enemy->y = enemy->y - enemy->height / 2;
+		enemies.push_back(enemy);
+		break;
+	}
 	case '1': {
 		player = new Player(x, y, game);
 		// modificación para empezar a contar desde el suelo.
