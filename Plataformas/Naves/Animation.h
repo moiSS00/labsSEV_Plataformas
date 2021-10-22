@@ -7,7 +7,7 @@ class Animation
 public:
 	Animation(string filename, float actorWidth, float actorHeight,
 		float fileWidth, float fileHeight,
-		int updateFrecuence, int totalFrames, Game* game);
+		int updateFrecuence, int totalFrames, bool loop, Game* game);
 	bool update();
 	void draw(float x, float y);
 	int actorWidth; // Actor Width
@@ -25,5 +25,6 @@ public:
 	float frameHeigt; // Alto de un fotograma
 	int updateFrecuence = 0;
 	int updateTime = 0;
+	bool loop; 
 };
 
