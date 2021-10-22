@@ -176,16 +176,22 @@ void GameLayer::update() {
 					deleteProjectiles.push_back(projectile);
 				}
 
-				bool eInList = std::find(deleteEnemies.begin(),
-					deleteEnemies.end(),
-					enemy) != deleteEnemies.end();
-
-				if (!eInList) {
-					deleteEnemies.push_back(enemy);
-				}
+				enemy->impacted();
 
 				points++;
 				textPoints->content = to_string(points);
+			}
+		}
+	}
+
+	for (auto const& enemy : enemies) {
+		if (enemy->state == game->stateDead) {
+			bool eInList = std::find(deleteEnemies.begin(),
+				deleteEnemies.end(),
+				enemy) != deleteEnemies.end();
+
+			if (!eInList) {
+				deleteEnemies.push_back(enemy);
 			}
 		}
 	}
