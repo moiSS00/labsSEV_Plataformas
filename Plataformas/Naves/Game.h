@@ -32,6 +32,16 @@ public:
 	TTF_Font* font;
 	SDL_Texture* getTexture(string filename);
 	map<string, SDL_Texture*> mapTextures; // map - cache
+
+	int const stateMoving = 1;
+	int const stateJumping = 2;
+	int const stateDying = 3;
+	int const stateDead = 4;
+	int const stateShooting = 5;
+
+	int const orientationRight = 1;
+	int const orientationLeft = 2;
+
 };
 
 

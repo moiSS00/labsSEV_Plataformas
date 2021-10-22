@@ -19,7 +19,11 @@ public:
 	int shootTime = 0;
 	Audio* audioShoot;
 	Animation* aIdleRight;
+	Animation* aIdleLeft;
+	Animation* aRunningRight;
+	Animation* aRunningLeft;
 	Animation* animation; // Referencia a la animación mostrada
+	int orientation;
 };
 
 
