@@ -24,6 +24,7 @@ public:
 	void keysToControls(SDL_Event event);
 	void loadMap(string name);
 	void loadMapObject(char character, float x, float y);
+	void calculateScroll();
 
 	Player* player;
 	Background* background;
@@ -37,6 +38,8 @@ public:
 	Audio* audioBackground;
 	int mapWidth;
 	list<Tile*> tiles;
+	float scrollX;
+
 
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
