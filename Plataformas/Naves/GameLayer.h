@@ -41,6 +41,7 @@ public:
 	list<Tile*> tiles;
 	float scrollX;
 	Space* space;
+	Tile* cup; // Elemento de final de nivel
 
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
