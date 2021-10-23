@@ -15,6 +15,7 @@ public:
 	Animation* animation; // Referencia a la animación mostrada
 	int state;
 	Animation* aDying;
+	float vxIntelligence;
 };
 
 

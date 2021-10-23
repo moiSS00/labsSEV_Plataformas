@@ -12,6 +12,8 @@ Enemy::Enemy(float x, float y, Game* game)
 	animation = aMoving;
 
 	vx = 1;
+	vxIntelligence = -1;
+	vx = vxIntelligence;
 }
 
 void Enemy::update() {
@@ -33,8 +35,16 @@ void Enemy::update() {
 		animation = aDying;
 	}
 
+	// Establecer velocidad
 	if (state != game->stateDying) {
-		vx = -1;
+		// no está muerto y se ha quedado parado
+		if (vx == 0) {
+			vxIntelligence = vxIntelligence * -1;
+			vx = vxIntelligence;
+		}
+	}
+	else {
+		vx = 0;
 	}
 }
 
