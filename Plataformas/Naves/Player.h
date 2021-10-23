@@ -14,11 +14,13 @@ public:
 	void moveY(float axis);
 	Projectile* shoot();
 	void draw(float scrollX = 0) override; // Va a sobrescribir
+	void jump();
 
 	int shootCadence = 30;
 	int shootTime = 0;
 	int orientation;
 	int state;
+	bool onAir;
 
 	Audio* audioShoot;
 
