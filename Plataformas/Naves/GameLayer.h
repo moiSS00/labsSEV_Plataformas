@@ -26,6 +26,7 @@ public:
 	void loadMap(string name);
 	void loadMapObject(char character, float x, float y);
 	void calculateScroll();
+	void mouseToControls(SDL_Event event); // USO DE MOUSE
 
 	Player* player;
 	Background* background;
@@ -42,6 +43,10 @@ public:
 	float scrollX;
 	Space* space;
 	Tile* cup; // Elemento de final de nivel
+
+	// Elementos de interfaz
+	Actor* buttonJump;
+	Actor* buttonShoot;
 
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
