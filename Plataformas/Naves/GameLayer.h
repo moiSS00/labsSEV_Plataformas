@@ -52,6 +52,10 @@ public:
 	Actor* buttonJump;
 	Actor* buttonShoot;
 
+	Actor* message;
+	bool pause;
+	bool controlContinue = false;
+
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
 };
