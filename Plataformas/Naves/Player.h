@@ -15,12 +15,15 @@ public:
 	Projectile* shoot();
 	void draw(float scrollX = 0) override; // Va a sobrescribir
 	void jump();
+	void loseLife();
 
 	int shootCadence = 30;
 	int shootTime = 0;
 	int orientation;
 	int state;
 	bool onAir;
+	int lifes = 3;
+	int invulnerableTime = 0;
 
 	Audio* audioShoot;
 
