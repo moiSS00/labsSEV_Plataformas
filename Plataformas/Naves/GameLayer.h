@@ -8,7 +8,8 @@
 #include "Text.h"
 #include "Audio.h" 
 #include "Tile.h"
-#include "Space.h" // importar
+#include "Space.h" 
+#include "Pad.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -45,6 +46,7 @@ public:
 	Tile* cup; // Elemento de final de nivel
 
 	// Elementos de interfaz
+	Pad* pad;
 	Actor* buttonJump;
 	Actor* buttonShoot;
 
