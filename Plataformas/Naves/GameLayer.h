@@ -8,6 +8,7 @@
 #include "Text.h"
 #include "Audio.h" 
 #include "Tile.h"
+#include "Space.h" // importar
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -39,7 +40,7 @@ public:
 	int mapWidth;
 	list<Tile*> tiles;
 	float scrollX;
-
+	Space* space;
 
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
