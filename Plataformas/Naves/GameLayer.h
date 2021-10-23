@@ -28,6 +28,7 @@ public:
 	void loadMapObject(char character, float x, float y);
 	void calculateScroll();
 	void mouseToControls(SDL_Event event); // USO DE MOUSE
+	void gamePadToControls(SDL_Event event); // USO DE GAMEPAD
 
 	Player* player;
 	Background* background;
@@ -46,6 +47,7 @@ public:
 	Tile* cup; // Elemento de final de nivel
 
 	// Elementos de interfaz
+	SDL_GameController* gamePad;
 	Pad* pad;
 	Actor* buttonJump;
 	Actor* buttonShoot;
