@@ -8,6 +8,10 @@ Player::Player(float x, float y, Game* game)
 	state = game->stateMoving;
 	audioShoot = new Audio("res/efecto_disparo.wav", false);
 
+	aJumpingRight = new Animation("res/jugador_saltando_derecha.png",
+		width, height, 160, 40, 6, 4, true, game);
+	aJumpingLeft = new Animation("res/jugador_saltando_izquierda.png",
+		width, height, 160, 40, 6, 4, true, game);
 	aShootingRight = new Animation("res/jugador_disparando_derecha.png",
 		width, height, 160, 40, 6, 4, false, game);
 	aShootingLeft = new Animation("res/jugador_disparando_izquierda.png",
@@ -24,8 +28,27 @@ Player::Player(float x, float y, Game* game)
 }
 
 void Player::update() {
+	// En el aire y moviéndose, PASA a estar saltando
+	if (onAir && state == game->stateMoving) {
+		state = game->stateJumping;
+	}
+	// No está en el aire y estaba saltando, PASA a moverse
+	if (!onAir && state == game->stateJumping) {
+		state = game->stateMoving;
+	}
+
 	if (invulnerableTime > 0) {
 		invulnerableTime--;
+	}
+
+	// Selección de animación basada en estados
+	if (state == game->stateJumping) {
+		if (orientation == game->orientationRight) {
+			animation = aJumpingRight;
+		}
+		if (orientation == game->orientationLeft) {
+			animation = aJumpingLeft;
+		}
 	}
 
 	bool endAnimation = animation->update();
