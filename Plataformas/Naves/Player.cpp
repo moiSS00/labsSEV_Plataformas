@@ -148,9 +148,9 @@ void Player::draw(float scrollX) {
 	}
 }
 
-void Player::jump() {
+void Player::jump(float v) {
 	if (!onAir) {
-		vy = -16;
+		vy = v;
 		onAir = true;
 	}
 }
