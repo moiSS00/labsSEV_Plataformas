@@ -42,6 +42,7 @@ void GameLayer::init() {
 	collectables.clear();
 	tiles.clear();
 	jumpingPlatforms.clear(); 
+	destructibleTiles.clear(); 
 
 	loadMap("res/" + to_string(game->currentLevel) + ".txt");
 }
@@ -226,6 +227,7 @@ void GameLayer::update() {
 	list<Enemy*> deleteEnemies;
 	list<Projectile*> deleteProjectiles;
 	list<Collectable*> deleteCollectables;
+	list<Tile*> deleteDestructibleTiles;
 
 	// Colisiones , Player - Enemy
 	for (auto const& enemy : enemies) {
@@ -318,6 +320,29 @@ void GameLayer::update() {
 		space->removeDynamicActor(checkPoint); // Lo eliminamos una vez recogido
 	}
 
+	// Colisiones Projectile - DestructivTile 
+	for (auto const& destructibleTile : destructibleTiles) {
+		for (auto const& projectile : projectiles) {
+			if (destructibleTile->isOverlap(projectile)) {
+				bool eInList = std::find(deleteDestructibleTiles.begin(),
+					deleteDestructibleTiles.end(),
+					destructibleTile) != deleteDestructibleTiles.end();
+
+				if (!eInList) {
+					deleteDestructibleTiles.push_back(destructibleTile);
+				}
+
+				bool pInList = std::find(deleteProjectiles.begin(),
+					deleteProjectiles.end(),
+					projectile) != deleteProjectiles.end();
+
+				if (!pInList) {
+					deleteProjectiles.push_back(projectile);
+				}
+			}
+		}
+	}
+
 	// Fase de eliminación 
 
 	// Eliminación de enemigos 
@@ -339,6 +364,13 @@ void GameLayer::update() {
 	for (auto const& delCollectable : deleteCollectables) {
 		collectables.remove(delCollectable);
 		space->removeDynamicActor(delCollectable);
+	}
+	deleteCollectables.clear();
+
+	// Eliminación de destructible tiles
+	for (auto const& delDestructibleTile : deleteDestructibleTiles) {
+		destructibleTiles.remove(delDestructibleTile);
+		space->removeStaticActor(delDestructibleTile);
 	}
 	deleteCollectables.clear();
 
@@ -376,6 +408,11 @@ void GameLayer::draw() {
 	// Tiles
 	for (auto const& tile : tiles) {
 		tile->draw(scrollX);
+	}
+
+	// Destructible tiles
+	for (auto const& destructibleTile : destructibleTiles) {
+		destructibleTile->draw(scrollX);
 	}
 
 	// Jumping platforms
@@ -455,6 +492,14 @@ void GameLayer::loadMap(string name) {
 void GameLayer::loadMapObject(char character, float x, float y)
 {
 	switch (character) {
+	case 'U': {
+		Tile* tile = new Tile("res/bloque_muro.png", x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		tile->y = tile->y - tile->height / 2;
+		destructibleTiles.push_back(tile);
+		space->addStaticActor(tile);
+		break;
+	}
 	case 'Y': {
 		Tile* tile = new Tile("res/bloque_metal.png", x, y, game);
 		// modificación para empezar a contar desde el suelo.

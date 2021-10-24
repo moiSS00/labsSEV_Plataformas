@@ -70,7 +70,8 @@ public:
 
 	// Tiles 
 	list<Tile*> tiles;
-	list<Tile*> jumpingPlatforms; 
+	list<Tile*> jumpingPlatforms;
+	list<Tile*> destructibleTiles;
 
 	// Elemento de final de nivel (copa)
 	Tile* cup; 
