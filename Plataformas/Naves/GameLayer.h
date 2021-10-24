@@ -67,6 +67,7 @@ public:
 	//Check point 
 	CheckPoint* checkPoint;
 	bool activeCheckpoint = false; // Indica si se activó un checkPoint o no
+	int lastPosition[2]; // Almacena la ultima posicion (x e y)
 
 	// Elemento de final de nivel (copa)
 	Tile* cup; 

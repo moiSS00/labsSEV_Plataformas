@@ -193,6 +193,7 @@ void GameLayer::update() {
 		message = new Actor("res/mensaje_ganar.png", WIDTH * 0.5, HEIGHT * 0.5,
 			WIDTH, HEIGHT, game);
 		pause = true;
+		activeCheckpoint = false;
 		init();
 	}
 
@@ -269,6 +270,18 @@ void GameLayer::update() {
 		}
 	}
 
+	for (auto const& enemy : enemies) {
+		if (enemy->state == game->stateDead) {
+			bool eInList = std::find(deleteEnemies.begin(),
+				deleteEnemies.end(),
+				enemy) != deleteEnemies.end();
+
+			if (!eInList) {
+				deleteEnemies.push_back(enemy);
+			}
+		}
+	}
+
 	// Colisiones , Player - Recolectable
 	for (auto const& collectable : collectables) {
 		if (collectable->isOverlap(player)) {
@@ -286,16 +299,13 @@ void GameLayer::update() {
 		}
 	}
 
-	for (auto const& enemy : enemies) {
-		if (enemy->state == game->stateDead) {
-			bool eInList = std::find(deleteEnemies.begin(),
-				deleteEnemies.end(),
-				enemy) != deleteEnemies.end();
-
-			if (!eInList) {
-				deleteEnemies.push_back(enemy);
-			}
-		}
+	// Colisiones Player - CheckPoint 
+	if (checkPoint->isOverlap(player)) {
+		// Actualizo la posición 
+		activeCheckpoint = true;
+		lastPosition[0] = checkPoint->x;
+		lastPosition[1] = checkPoint->y;
+		space->removeDynamicActor(checkPoint); // Lo eliminamos una vez recogido
 	}
 
 	// Fase de eliminación 
@@ -461,9 +471,18 @@ void GameLayer::loadMapObject(char character, float x, float y)
 		break;
 	}
 	case '1': {
-		player = new Player(x, y, game);
-		// modificación para empezar a contar desde el suelo.
-		player->y = player->y - player->height / 2;
+		if (activeCheckpoint) { // Hay checkPoint activado
+			player = new Player(lastPosition[0], lastPosition[1], game); // Se restaura posición 
+		}
+		else {
+			player = new Player(x, y, game);
+			// modificación para empezar a contar desde el suelo.
+			player->y = player->y - player->height / 2;
+			// Inicializamos con la prmiera posición 
+			lastPosition[0] = player->x;
+			lastPosition[1] = player->y;
+		}
+
 		space->addDynamicActor(player);
 		break;
 	}
