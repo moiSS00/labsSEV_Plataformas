@@ -11,6 +11,7 @@
 #include "Space.h" 
 #include "Pad.h"
 #include "Collectable.h"
+#include "CheckPoint.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -42,7 +43,6 @@ public:
 	list<Tile*> tiles;
 	float scrollX;
 	Space* space;
-	Tile* cup; // Elemento de final de nivel
 
 	// Elementos de interfaz
 	SDL_GameController* gamePad;
@@ -63,6 +63,13 @@ public:
 	Actor* backgroundCollectable;
 	Text* textCollectables;
 	int numberOfColectables;
+
+	//Check point 
+	CheckPoint* checkPoint;
+	bool activeCheckpoint = false; // Indica si se activó un checkPoint o no
+
+	// Elemento de final de nivel (copa)
+	Tile* cup; 
 
 	// Listas de actores
 	list<Enemy*> enemies;

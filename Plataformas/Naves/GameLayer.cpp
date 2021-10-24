@@ -373,6 +373,11 @@ void GameLayer::draw() {
 		collectable->draw(scrollX);
 	}
 
+	// Check point 
+	if (!activeCheckpoint) { // Si no se activo
+		checkPoint->draw(scrollX);
+	}
+
 	// Indicador puntos 
 	textPoints->draw();
 	backgroundPoints->draw();
@@ -425,6 +430,13 @@ void GameLayer::loadMap(string name) {
 void GameLayer::loadMapObject(char character, float x, float y)
 {
 	switch (character) {
+	case 'P': {
+		checkPoint = new CheckPoint(x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		checkPoint->y = checkPoint->y - checkPoint->height / 2;
+		space->addDynamicActor(checkPoint);
+		break;
+	}
 	case 'R': {
 		Collectable* collectable = new Collectable(x, y, game);
 		// modificación para empezar a contar desde el suelo.
