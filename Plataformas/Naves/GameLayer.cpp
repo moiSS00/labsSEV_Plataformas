@@ -17,7 +17,6 @@ void GameLayer::init() {
 
 	space = new Space(1);
 	scrollX = 0;
-	tiles.clear();
 
 	audioBackground = new Audio("res/musica_ambiente.mp3", true);
 	audioBackground->play();
@@ -40,7 +39,9 @@ void GameLayer::init() {
 	// Vaciamos las listas por si reinciamos el juego 
 	enemies.clear(); 
 	projectiles.clear(); 
-	collectables.clear(); 
+	collectables.clear();
+	tiles.clear();
+	jumpingPlatforms.clear(); 
 
 	loadMap("res/" + to_string(game->currentLevel) + ".txt");
 }
@@ -112,7 +113,7 @@ void GameLayer::processControls() {
 		
 	}
 	else if (controlMoveY < 0) {
-		player->jump();
+		player->jump(-16);
 	}
 	else {
 		
@@ -299,6 +300,15 @@ void GameLayer::update() {
 		}
 	}
 
+	// Colisiones , Player - JumpingPlatform
+	for (auto const& jumpingPlatform : jumpingPlatforms) {
+		if (player->isOverlap(jumpingPlatform)) {
+			// No hace falta lista auxiliar para eliminar las plataformas de salto usadas
+			// Aunque se olisione con ellas, seguiran en el mapa para volverse a usar
+			player->jump(-20);
+		}
+	}
+
 	// Colisiones Player - CheckPoint 
 	if (checkPoint->isOverlap(player)) {
 		// Actualizo la posición 
@@ -366,6 +376,11 @@ void GameLayer::draw() {
 	// Tiles
 	for (auto const& tile : tiles) {
 		tile->draw(scrollX);
+	}
+
+	// Jumping platforms
+	for (auto const& jumpingPlatform : jumpingPlatforms) {
+		jumpingPlatform->draw(scrollX);
 	}
 
 	// Enemigos
@@ -440,6 +455,14 @@ void GameLayer::loadMap(string name) {
 void GameLayer::loadMapObject(char character, float x, float y)
 {
 	switch (character) {
+	case 'Y': {
+		Tile* tile = new Tile("res/bloque_metal.png", x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		tile->y = tile->y - tile->height / 2;
+		jumpingPlatforms.push_back(tile);
+		space->addStaticActor(tile);
+		break;
+	}
 	case 'P': {
 		checkPoint = new CheckPoint(x, y, game);
 		// modificación para empezar a contar desde el suelo.

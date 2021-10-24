@@ -40,7 +40,6 @@ public:
 	int newEnemyTime = 0;
 	Audio* audioBackground;
 	int mapWidth;
-	list<Tile*> tiles;
 	float scrollX;
 	Space* space;
 
@@ -68,6 +67,10 @@ public:
 	CheckPoint* checkPoint;
 	bool activeCheckpoint = false; // Indica si se activó un checkPoint o no
 	int lastPosition[2]; // Almacena la ultima posicion (x e y)
+
+	// Tiles 
+	list<Tile*> tiles;
+	list<Tile*> jumpingPlatforms; 
 
 	// Elemento de final de nivel (copa)
 	Tile* cup; 

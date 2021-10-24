@@ -14,7 +14,7 @@ public:
 	void moveY(float axis);
 	Projectile* shoot();
 	void draw(float scrollX = 0) override; // Va a sobrescribir
-	void jump();
+	void jump(float v);
 	void loseLife();
 
 	int shootCadence = 30;
