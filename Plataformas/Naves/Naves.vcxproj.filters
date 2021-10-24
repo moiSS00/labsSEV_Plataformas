@@ -78,6 +78,9 @@
     <ClCompile Include="Collectable.cpp">
       <Filter>Archivos de origen\Actores</Filter>
     </ClCompile>
+    <ClCompile Include="CheckPoint.cpp">
+      <Filter>Archivos de origen\Actores</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -126,6 +129,9 @@
       <Filter>Archivos de encabezado\Layers</Filter>
     </ClInclude>
     <ClInclude Include="Collectable.h">
+      <Filter>Archivos de encabezado\Actores</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckPoint.h">
       <Filter>Archivos de encabezado\Actores</Filter>
     </ClInclude>
   </ItemGroup>
