@@ -10,6 +10,7 @@
 #include "Tile.h"
 #include "Space.h" 
 #include "Pad.h"
+#include "Collectable.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -36,9 +37,6 @@ public:
 	int controlMoveY = 0;
 	int controlMoveX = 0;
 	int newEnemyTime = 0;
-	Actor* backgroundPoints;
-	Text* textPoints;
-	int points;
 	Audio* audioBackground;
 	int mapWidth;
 	list<Tile*> tiles;
@@ -56,8 +54,20 @@ public:
 	bool pause;
 	bool controlContinue = false;
 
+	// Contador de puntos 
+	Actor* backgroundPoints;
+	Text* textPoints;
+	int points;
+
+	// Contador de recolectables recogidos
+	Actor* backgroundCollectable;
+	Text* textCollectables;
+	int numberOfColectables;
+
+	// Listas de actores
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
+	list<Collectable*> collectables;
 };
 
 
