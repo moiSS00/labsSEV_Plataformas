@@ -269,7 +269,22 @@ void GameLayer::update() {
 		}
 	}
 
+	// Colisiones , Player - Recolectable
+	for (auto const& collectable : collectables) {
+		if (collectable->isOverlap(player)) {
 
+			bool cInList = std::find(deleteCollectables.begin(),
+				deleteCollectables.end(),
+				collectable) != deleteCollectables.end();
+
+			if (!cInList) {
+				deleteCollectables.push_back(collectable);
+			}
+
+			numberOfColectables++;
+			textCollectables->content = to_string(numberOfColectables);
+		}
+	}
 
 	for (auto const& enemy : enemies) {
 		if (enemy->state == game->stateDead) {
