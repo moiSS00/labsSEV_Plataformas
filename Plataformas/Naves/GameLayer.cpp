@@ -508,6 +508,22 @@ void GameLayer::loadMap(string name) {
 void GameLayer::loadMapObject(char character, float x, float y)
 {
 	switch (character) {
+	case '9': {
+		createDoor(x, y, 9);
+		break;
+	}
+	case '8': {
+		createDoor(x, y, 8);
+		break;
+	}
+	case '7': {
+		createDoor(x, y, 7);
+		break;
+	}
+	case '5': {
+		createDoor(x, y, 5);
+		break;
+	}
 	case '4': {
 		createDoor(x, y, 4);
 		break;
