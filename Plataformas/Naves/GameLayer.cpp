@@ -348,8 +348,9 @@ void GameLayer::update() {
 	for (auto const& door : doors) {
 		if (door->isOverlap(player)) {
 			if (door->connectedTo != NULL) {
-				player->x = door->connectedTo->x + 60;
+				player->x = door->connectedTo->x + 90;
 				player->y = door->connectedTo->y;
+				player->orientation = game->orientationRight; 
 			}
 		}
 	}
