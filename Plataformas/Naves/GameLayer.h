@@ -12,6 +12,7 @@
 #include "Pad.h"
 #include "Collectable.h"
 #include "CheckPoint.h"
+#include "Door.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -80,6 +81,10 @@ public:
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
 	list<Collectable*> collectables;
+	list<Door*> doors;
+
+private:
+	void createDoor(float x, float y, int id); // Método privado auxiliar para crear una puerta
 };
 
 

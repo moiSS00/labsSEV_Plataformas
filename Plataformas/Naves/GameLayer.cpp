@@ -43,6 +43,7 @@ void GameLayer::init() {
 	tiles.clear();
 	jumpingPlatforms.clear(); 
 	destructibleTiles.clear(); 
+	doors.clear(); 
 
 	loadMap("res/" + to_string(game->currentLevel) + ".txt");
 }
@@ -320,7 +321,7 @@ void GameLayer::update() {
 		space->removeDynamicActor(checkPoint); // Lo eliminamos una vez recogido
 	}
 
-	// Colisiones Projectile - DestructivTile 
+	// Colisiones Projectile - DestructibleTile 
 	for (auto const& destructibleTile : destructibleTiles) {
 		for (auto const& projectile : projectiles) {
 			if (destructibleTile->isOverlap(projectile)) {
@@ -339,6 +340,17 @@ void GameLayer::update() {
 				if (!pInList) {
 					deleteProjectiles.push_back(projectile);
 				}
+			}
+		}
+	}
+
+	// Colisión Player - Door
+	for (auto const& door : doors) {
+		if (door->isOverlap(player)) {
+			if (door->connectedTo != NULL) {
+				player->x = door->connectedTo->x + 90;
+				player->y = door->connectedTo->y;
+				player->orientation = game->orientationRight; 
 			}
 		}
 	}
@@ -435,6 +447,11 @@ void GameLayer::draw() {
 		collectable->draw(scrollX);
 	}
 
+	// Doors
+	for (auto const& door : doors) {
+		door->draw(scrollX);
+	}
+
 	// Check point 
 	if (!activeCheckpoint) { // Si no se activo
 		checkPoint->draw(scrollX);
@@ -492,6 +509,26 @@ void GameLayer::loadMap(string name) {
 void GameLayer::loadMapObject(char character, float x, float y)
 {
 	switch (character) {
+	case '9': {
+		createDoor(x, y, 9);
+		break;
+	}
+	case '8': {
+		createDoor(x, y, 8);
+		break;
+	}
+	case '7': {
+		createDoor(x, y, 7);
+		break;
+	}
+	case '5': {
+		createDoor(x, y, 5);
+		break;
+	}
+	case '4': {
+		createDoor(x, y, 4);
+		break;
+	}
 	case 'U': {
 		Tile* tile = new Tile("res/bloque_muro.png", x, y, game);
 		// modificación para empezar a contar desde el suelo.
@@ -563,6 +600,21 @@ void GameLayer::loadMapObject(char character, float x, float y)
 		break;
 	}
 	}
+}
+
+void GameLayer::createDoor(float x, float y, int id) {
+	Door* door = new Door(x, y, game);
+	// modificación para empezar a contar desde el suelo.
+	door->y = door->y - door->height / 2;
+	door->id = id;
+	for (auto const& doorAux : doors) { // Conectamos con otra puerta 
+		if (doorAux->id == id) {
+			door->connectedTo = doorAux;
+			doorAux->connectedTo = door;
+		}
+	}
+	doors.push_back(door);
+	space->addDynamicActor(door);
 }
 
 void GameLayer::mouseToControls(SDL_Event event) {
@@ -657,5 +709,6 @@ void GameLayer::gamePadToControls(SDL_Event event) {
 		controlMoveY = 0;
 	}
 }
+
 
 
