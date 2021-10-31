@@ -148,6 +148,18 @@ void GameLayer::keysToControls(SDL_Event event) {
 		case SDLK_SPACE: // dispara
 			controlShoot = true;
 			break;
+		case SDLK_RETURN:
+			// Colisión Player - Door
+			for (auto const& door : doors) {
+				if (door->isOverlap(player)) {
+					if (door->connectedTo != NULL) {
+						player->x = door->connectedTo->x;
+						player->y = door->connectedTo->y;
+						break; 
+					}
+				}
+			}
+			break; 
 		}
 	}
 	if (event.type == SDL_KEYUP) {
@@ -344,17 +356,6 @@ void GameLayer::update() {
 		}
 	}
 
-	// Colisión Player - Door
-	for (auto const& door : doors) {
-		if (door->isOverlap(player)) {
-			if (door->connectedTo != NULL) {
-				player->x = door->connectedTo->x + 90;
-				player->y = door->connectedTo->y;
-				player->orientation = game->orientationRight; 
-			}
-		}
-	}
-
 	// Fase de eliminación 
 
 	// Eliminación de enemigos 
@@ -411,6 +412,11 @@ void GameLayer::draw() {
 	// Fondo
 	background->draw();
 
+	// Doors
+	for (auto const& door : doors) {
+		door->draw(scrollX);
+	}
+
 	// Jugador
 	player->draw(scrollX);
 
@@ -445,11 +451,6 @@ void GameLayer::draw() {
 	// Recolectable
 	for (auto const& collectable : collectables) {
 		collectable->draw(scrollX);
-	}
-
-	// Doors
-	for (auto const& door : doors) {
-		door->draw(scrollX);
 	}
 
 	// Check point 
@@ -608,9 +609,9 @@ void GameLayer::createDoor(float x, float y, int id) {
 	door->y = door->y - door->height / 2;
 	door->id = id;
 	for (auto const& doorAux : doors) { // Conectamos con otra puerta 
-		if (doorAux->id == id) {
-			door->connectedTo = doorAux;
+		if (doorAux->id == id && doorAux->connectedTo == NULL) {
 			doorAux->connectedTo = door;
+			door->connectedTo = doorAux;
 		}
 	}
 	doors.push_back(door);
