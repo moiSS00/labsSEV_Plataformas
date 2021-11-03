@@ -208,7 +208,7 @@ void GameLayer::update() {
 		message = new Actor("res/mensaje_ganar.png", WIDTH * 0.5, HEIGHT * 0.5,
 			WIDTH, HEIGHT, game);
 		pause = true;
-		activeCheckpoint = false;
+		checkPoint->activeCheckpoint = false; 
 		init();
 	}
 
@@ -327,9 +327,7 @@ void GameLayer::update() {
 	// Colisiones Player - CheckPoint 
 	if (checkPoint->isOverlap(player)) {
 		// Actualizo la posición 
-		activeCheckpoint = true;
-		lastPosition[0] = checkPoint->x;
-		lastPosition[1] = checkPoint->y;
+		checkPoint->activeCheckpoint = true; 
 		space->removeDynamicActor(checkPoint); // Lo eliminamos una vez recogido
 	}
 
@@ -454,7 +452,7 @@ void GameLayer::draw() {
 	}
 
 	// Check point 
-	if (!activeCheckpoint) { // Si no se activo
+	if (!checkPoint->activeCheckpoint) { // Si no se activo
 		checkPoint->draw(scrollX);
 	}
 
@@ -550,6 +548,7 @@ void GameLayer::loadMapObject(char character, float x, float y)
 		checkPoint = new CheckPoint(x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		checkPoint->y = checkPoint->y - checkPoint->height / 2;
+		checkPoint->lastPosition[1] = checkPoint->y; 
 		space->addDynamicActor(checkPoint);
 		break;
 	}
@@ -577,16 +576,14 @@ void GameLayer::loadMapObject(char character, float x, float y)
 		break;
 	}
 	case '1': {
-		if (activeCheckpoint) { // Hay checkPoint activado
-			player = new Player(lastPosition[0], lastPosition[1], game); // Se restaura posición 
+		if (checkPoint != NULL && checkPoint->activeCheckpoint) { // Hay checkPoint activado
+			player = new Player(checkPoint->lastPosition[0], checkPoint->lastPosition[1], game); // Se restaura posición 
 		}
 		else {
+			// Inicializamos con la primera posicion
 			player = new Player(x, y, game);
 			// modificación para empezar a contar desde el suelo.
 			player->y = player->y - player->height / 2;
-			// Inicializamos con la prmiera posición 
-			lastPosition[0] = player->x;
-			lastPosition[1] = player->y;
 		}
 
 		space->addDynamicActor(player);
